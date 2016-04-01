@@ -5,7 +5,6 @@ import org.objectweb.asm.ClassReader;
 
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
 public class PreferredAssertionsLibrariesUsedTest {
@@ -19,12 +18,11 @@ public class PreferredAssertionsLibrariesUsedTest {
             String resourceName = "/cz/mikealdo/tests/" + aClass.getSimpleName() + ".class";
             InputStream resourceAsStream = aClass.getResourceAsStream(resourceName);
             new ClassReader(resourceAsStream).accept(v, 0);
-        }
-
-        Set<String> classPackages = v.getPackages();
-        for (String classPackage : classPackages) {
-            if (classPackage.contains("com/google/common/truth")) {
-                System.err.println("Google Truth library is not allowed for using in this module");
+            Set<String> classPackages = v.getPackages();
+            for (String classPackage : classPackages) {
+                if (classPackage.contains("com/google/common/truth")) {
+                    System.err.println("Google Truth library is not allowed for using in class " + aClass.getSimpleName());
+                }
             }
         }
     }
